@@ -55,18 +55,18 @@ internal fun parseGameSchedule(locators: List<Locator>, season: Int, seriesType:
         }
 
         val gameInfo = GameInfo(
-            "$gameKey-$count",
-            seriesType,
-            currentDate,
-            time,
-            homeTeam,
-            awayTeam,
-            homeScore,
-            awayScore,
-            remainCells[3].innerText().trim(),
-            remainCells[1].innerHTML().replace("<br>", ",").trim(),
-            gameStatus,
-            cancellationReason
+            gameKey = "$gameKey-$count",
+            seriesType = seriesType,
+            date = currentDate,
+            time = time,
+            awayTeam = awayTeam,
+            homeTeam = homeTeam,
+            awayScore = awayScore,
+            homeScore = homeScore,
+            relay = remainCells[1].innerHTML().replace("<br>", ",").trim(),
+            stadium = remainCells[3].innerText().trim(),
+            gameStatus = gameStatus,
+            cancellationReason = cancellationReason
         )
 
         gameInfoList.add(gameInfo)
