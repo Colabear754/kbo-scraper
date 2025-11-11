@@ -41,4 +41,8 @@ class GameInfoDataService(
         return gameInfoRepository.findByDateAndTeam(date, team)
             .map(FindGameInfoResponse::from)
     }
+
+    fun findGameInfoByGameKey(gameKey: String): FindGameInfoResponse? {
+        return FindGameInfoResponse.from(gameInfoRepository.findByGameKey(gameKey))
+    }
 }
