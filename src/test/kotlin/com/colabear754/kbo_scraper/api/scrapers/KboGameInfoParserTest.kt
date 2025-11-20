@@ -152,7 +152,7 @@ class KboGameInfoParserTest : StringSpec({
         gameSchedule[1].homeScore shouldBe null
         gameSchedule[1].relay shouldBe "SPO-2T"
         gameSchedule[1].stadium shouldBe "문학"
-        gameSchedule[1].gameStatus shouldBe GameStatus.CANCELED
+        gameSchedule[1].gameStatus shouldBe GameStatus.CANCELLED
         gameSchedule[1].cancellationReason shouldBe CancellationReason.GROUND_CONDITION
         // 3경기
         gameSchedule[2].gameKey shouldBe "20250718-HEROES-SAMSUNG-1"
@@ -162,7 +162,7 @@ class KboGameInfoParserTest : StringSpec({
         gameSchedule[2].homeScore shouldBe null
         gameSchedule[2].relay shouldBe "SS-T"
         gameSchedule[2].stadium shouldBe "대구"
-        gameSchedule[2].gameStatus shouldBe GameStatus.CANCELED
+        gameSchedule[2].gameStatus shouldBe GameStatus.CANCELLED
         gameSchedule[2].cancellationReason shouldBe CancellationReason.RAIN
         // 4경기
         gameSchedule[3].gameKey shouldBe "20250718-HANWHA-KT-1"
@@ -181,7 +181,7 @@ class KboGameInfoParserTest : StringSpec({
         gameSchedule[4].homeScore shouldBe null
         gameSchedule[4].relay shouldBe "MS-T"
         gameSchedule[4].stadium shouldBe "광주"
-        gameSchedule[4].gameStatus shouldBe GameStatus.CANCELED
+        gameSchedule[4].gameStatus shouldBe GameStatus.CANCELLED
         gameSchedule[4].cancellationReason shouldBe CancellationReason.RAIN
     }
 

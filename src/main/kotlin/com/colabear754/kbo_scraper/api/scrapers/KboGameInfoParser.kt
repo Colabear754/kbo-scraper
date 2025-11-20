@@ -1,10 +1,6 @@
 package com.colabear754.kbo_scraper.api.scrapers
 
-import com.colabear754.kbo_scraper.api.domain.CancellationReason
-import com.colabear754.kbo_scraper.api.domain.GameInfo
-import com.colabear754.kbo_scraper.api.domain.GameStatus
-import com.colabear754.kbo_scraper.api.domain.SeriesType
-import com.colabear754.kbo_scraper.api.domain.Team
+import com.colabear754.kbo_scraper.api.domain.*
 import com.microsoft.playwright.Locator
 import java.time.LocalDate
 import java.time.LocalTime
@@ -50,7 +46,7 @@ internal fun parseGameSchedule(locators: List<Locator>, season: Int, seriesType:
         val cancellationReason = CancellationReason.fromString(remainCells.last().innerText().trim())
         val gameStatus = when {
             awayScore != null -> GameStatus.FINISHED
-            cancellationReason != null -> GameStatus.CANCELED
+            cancellationReason != null -> GameStatus.CANCELLED
             else -> GameStatus.SCHEDULED
         }
 
