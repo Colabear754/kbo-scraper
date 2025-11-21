@@ -29,24 +29,22 @@ internal fun parseGameSchedule(locators: List<Locator>, season: Int, seriesType:
         val time = LocalTime.parse(row.locator("td.time").innerText().trim())
 
         val (awayTeam, homeTeam) = playCell.locator("> span").allInnerTexts().map { Team.findByTeamName(it) }
-        val scoreSpans = playCell.locator("em span").allInnerTexts()
-        var awayScore: Int? = null
-        var homeScore: Int? = null
-        if (scoreSpans.size > 1) {
-            awayScore = scoreSpans.first().toIntOrNull()
-            homeScore = scoreSpans.last().toIntOrNull()
-        }
 
         val gameKey = "${currentDate.format(yyyyMMdd)}-$awayTeam-$homeTeam"
         val count = gameCountMap[gameKey] ?: 1
         gameCountMap[gameKey] = count + 1
 
+        val scores = playCell.locator("em > span").allInnerTexts().mapNotNull { it.toIntOrNull() }
+        val awayScore = scores.getOrNull(0)
+        val homeScore = scores.getOrNull(1)
+
         val remainCells = row.locator("td:not([class])").all()
 
         val cancellationReason = CancellationReason.fromString(remainCells.last().innerText().trim())
+
         val gameStatus = when {
-            awayScore != null -> GameStatus.FINISHED
             cancellationReason != null -> GameStatus.CANCELLED
+            scores.isNotEmpty() -> GameStatus.FINISHED
             else -> GameStatus.SCHEDULED
         }
 
