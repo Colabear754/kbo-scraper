@@ -62,6 +62,13 @@ class CollectGameScheduleService(
     }
 }
 
+/**
+ * 셀렉트 박스 조작 후 DOM이 사라질 때까지 대기한다.
+ *
+ * @receiver 사라질 요소의 Locator
+ * @param selectBoxSelector 셀렉트 박스 선택자
+ * @param optionValue 선택할 옵션 값
+ */
 private fun Locator.selectOptionAndWaitForDomChange(
     selectBoxSelector: String,
     optionValue: String

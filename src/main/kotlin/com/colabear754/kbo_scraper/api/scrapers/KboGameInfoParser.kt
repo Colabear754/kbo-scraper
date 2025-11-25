@@ -6,6 +6,15 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * 경기 일정 테이블의 row Locator 리스트를 파싱하여 경기 정보 리스트로 반환하는 함수.
+ * 테스트 코드에서 원활하게 호출할 수 있도록 단독 탑레벨 함수로 작성.
+ *
+ * @param locators row Locator 리스트
+ * @param season 경기 시즌
+ * @param seriesType 시리즈 타입
+ * @return 경기 정보 리스트
+ */
 internal fun parseGameSchedule(locators: List<Locator>, season: Int, seriesType: SeriesType): List<GameInfo> {
     val yyyyMMdd = DateTimeFormatter.ofPattern("yyyyMMdd")
     val gameCountMap = mutableMapOf<String, Int>()
