@@ -7,7 +7,7 @@ import org.springframework.format.FormatterRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class ConverterFactoryConfig : WebMvcConfigurer {
+class StringToEnumConverterFactory : WebMvcConfigurer {
     override fun addFormatters(registry: FormatterRegistry) {
         registry.addConverterFactory(object : ConverterFactory<String, Enum<*>> {
             override fun <T : Enum<*>> getConverter(targetType: Class<T>): Converter<String, T> =

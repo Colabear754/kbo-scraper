@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor
 
 @Component
-class HandlerAdapterPostProcessor : BeanPostProcessor {
+class StringToGlobalResponsePostProcessor : BeanPostProcessor {
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
         if (bean is RequestMappingHandlerAdapter) {
             val handlers = bean.returnValueHandlers ?: return bean
