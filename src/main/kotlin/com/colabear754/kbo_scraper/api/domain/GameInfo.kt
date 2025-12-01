@@ -1,13 +1,6 @@
 package com.colabear754.kbo_scraper.api.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EntityListeners
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -55,31 +48,32 @@ class GameInfo(
     lateinit var modifiedAt: LocalDateTime
         protected set
 
-    fun update(gameInfo: GameInfo): Boolean {
-        val isUpdated = this.time?.equals(gameInfo.time) == false
-                || this.awayScore != gameInfo.awayScore
-                || this.homeScore != gameInfo.homeScore
-                || this.stadium != gameInfo.stadium
-                || this.relay != gameInfo.relay
-                || this.gameStatus != gameInfo.gameStatus
-                || this.cancellationReason != gameInfo.cancellationReason
+    fun update(newGameInfo: GameInfo): Boolean {
+        val isUpdated = this.time != newGameInfo.time
+                || this.awayScore != newGameInfo.awayScore
+                || this.homeScore != newGameInfo.homeScore
+                || this.stadium != newGameInfo.stadium
+                || this.relay != newGameInfo.relay
+                || this.gameStatus != newGameInfo.gameStatus
+                || this.cancellationReason != newGameInfo.cancellationReason
 
-        this.time = gameInfo.time
-        this.awayScore = gameInfo.awayScore
-        this.homeScore = gameInfo.homeScore
-        this.stadium = gameInfo.stadium
-        this.relay = gameInfo.relay
-        this.gameStatus = gameInfo.gameStatus
-        this.cancellationReason = gameInfo.cancellationReason
+        if (!isUpdated) {
+            return false
+        }
 
-        return isUpdated
+        this.time = newGameInfo.time
+        this.awayScore = newGameInfo.awayScore
+        this.homeScore = newGameInfo.homeScore
+        this.stadium = newGameInfo.stadium
+        this.relay = newGameInfo.relay
+        this.gameStatus = newGameInfo.gameStatus
+        this.cancellationReason = newGameInfo.cancellationReason
+
+        return true
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is GameInfo) return false
-        return gameKey == other.gameKey
-    }
+    override fun equals(other: Any?) =
+        this === other || (other is GameInfo && gameKey == other.gameKey)
 
     override fun hashCode(): Int {
         return gameKey.hashCode()

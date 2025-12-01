@@ -14,27 +14,21 @@ class GameInfoDataService(
     private val gameInfoRepository: GameInfoRepository
 ) {
     @Transactional
-    fun saveOrUpdateGameInfo(seasonGameInfo: List<GameInfo>): CollectDataResponse {
-        var savedCount = 0
-        var modifiedCount = 0
-
-        val existingGamesMap = gameInfoRepository.findByGameKeyIn(seasonGameInfo.map { it.gameKey })
+    fun saveOrUpdateGameInfo(gameInfoList: List<GameInfo>): CollectDataResponse {
+        val existingGamesMap = gameInfoRepository.findByGameKeyIn(gameInfoList.map { it.gameKey })
             .associateBy { it.gameKey }
 
-        for (gameInfo in seasonGameInfo) {
-            val existingGame = existingGamesMap[gameInfo.gameKey]
-            if (existingGame == null) {
-                gameInfoRepository.save(gameInfo)
-                savedCount++
-                continue
-            }
-            val isUpdated = existingGame.update(gameInfo)
-            if (isUpdated) {
-                modifiedCount++
+        val (newGameList, gameListToUpdate) = gameInfoList.partition { existingGamesMap[it.gameKey] == null }
+        gameInfoRepository.saveAll(newGameList)
+
+        var modifiedCount = 0
+        for (gameInfo in gameListToUpdate) {
+            existingGamesMap[gameInfo.gameKey]?.run {
+                if (update(gameInfo)) modifiedCount++
             }
         }
 
-        return CollectDataResponse(seasonGameInfo.size, savedCount, modifiedCount)
+        return CollectDataResponse(gameInfoList.size, newGameList.size, modifiedCount)
     }
 
     fun findGameInfoByTeamAndDate(date: LocalDate, team: Team): List<FindGameInfoResponse> {
