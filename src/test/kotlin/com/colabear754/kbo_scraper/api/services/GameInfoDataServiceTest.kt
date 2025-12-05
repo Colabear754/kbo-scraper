@@ -6,6 +6,8 @@ import com.colabear754.kbo_scraper.api.domain.SeriesType
 import com.colabear754.kbo_scraper.api.domain.Team
 import com.colabear754.kbo_scraper.api.repositories.GameInfoRepository
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.every
@@ -30,7 +32,7 @@ class GameInfoDataServiceTest : BehaviorSpec({
         When("경기 정보들이 혼합된 리스트를 DB에 반영하면") {
             every { existingGame1.update(gameToUpdate) } returns true
             every { existingGame2.update(gameWithoutChange) } returns false
-            every { gameInfoRepository.save(any()) } answers { firstArg() }
+            every { gameInfoRepository.saveAll(any<List<GameInfo>>()) } answers { firstArg() }
             every { gameInfoRepository.findByGameKeyIn(listOf("gameKey1", "gameKey2", "gameKey3")) } returns
                     listOf(existingGame1, existingGame2)
 
@@ -43,9 +45,12 @@ class GameInfoDataServiceTest : BehaviorSpec({
             }
 
             Then("신규 경기에 대해서만 save가 실행되어야 한다") {
-                verify(exactly = 1) { gameInfoRepository.save(newGame) }
-                verify(exactly = 0) { gameInfoRepository.save(gameToUpdate) }
-                verify(exactly = 0) { gameInfoRepository.save(gameWithoutChange) }
+                verify(exactly = 1) { gameInfoRepository.saveAll(withArg<List<GameInfo>> {
+                    it.size shouldBe 1
+                    it shouldContain newGame
+                    it shouldNotContain gameToUpdate
+                    it shouldNotContain gameWithoutChange
+                }) }
             }
 
             Then("기존 경기들만 update가 실행되어야 한다") {
