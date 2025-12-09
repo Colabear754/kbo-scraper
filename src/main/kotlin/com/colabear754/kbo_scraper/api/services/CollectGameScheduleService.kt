@@ -41,7 +41,7 @@ class CollectGameScheduleService(
         return gameInfoDataService.saveOrUpdateGameInfo(seasonGameInfo)
     }
 
-    private suspend fun <R> launchChromium(action: suspend Browser.() -> R): R =
+    private fun <R> launchChromium(action: Browser.() -> R): R =
         Playwright.create().use { playwright ->
             playwright.chromium().launch().use { browser ->
                 browser.action()
